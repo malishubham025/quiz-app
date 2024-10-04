@@ -3,7 +3,7 @@ import './Login.css'
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-
+import Cookies from 'js-cookie';
 const Register = () => {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -18,9 +18,11 @@ const Register = () => {
         })
         console.log(response.data);
         if (response.data.registration) {
-            navigate('/home', { state: { name: name, auth: true } });
+            Cookies.set("isloggedin",true);
+            navigate('/', { state: { name: name, auth: true } });
         }
         else {
+            Cookies.set("isloggedin",false);
             alert("An error occured while registration!")
         }
     }

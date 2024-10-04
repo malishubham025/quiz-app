@@ -9,44 +9,64 @@ import Tips from './Tips';
 import Test from './Test';
 import Books from './Books';
 import About from './About';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+// Function to check authentication and render child components accordingly
+function RenderChild({ children }) {
+  let isLoggedIn = Cookies.get("isloggedin");
+  return isLoggedIn ? children : <Navigate to="/login" />;
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// Define routes using the createBrowserRouter
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>
+    element: <App />,
   },
   {
     path: "/register",
-    element: <Register/>
+    element: <Register />,
   },
-  // {
-  //   path: "/home",
-  //   element: <App/>
-  // },
+  {
+    path: "/login",
+    element: <Login />,
+  },
   {
     path: "/admin",
-    element: <Tips/>
+    element: (
+      <RenderChild>
+        <Tips />
+      </RenderChild>
+    ),
   },
   {
     path: "/test",
-    element: <Test/>
+    element: (
+      <RenderChild>
+        <Test />
+      </RenderChild>
+    ),
   },
   {
     path: "/books",
-    element: <Books/>
+    element: (
+      <RenderChild>
+        <Books />
+      </RenderChild>
+    ),
   },
   {
     path: "/about",
-    element: <About/>
-  }
-])
+    element: <About />,
+  },
+]);
+
 root.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

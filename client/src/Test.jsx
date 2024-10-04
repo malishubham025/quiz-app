@@ -8,7 +8,8 @@ const Test = () => {
     <div>
         <Navbar/>
         <Testpage/>
-        <Form/>
+        
+        {/* <Form/> */}
     </div>
   )
 }

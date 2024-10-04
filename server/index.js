@@ -38,12 +38,12 @@ app.post('/login', (req, res1) =>{
     })
 })
 
-app.post('/register', (req, res)=>{
+app.post('/register', (req, res1)=>{
     const name = req.body.name;
     const password = req.body.password;
     Usermodel.find({username:name,password:password}).then((res)=>{
         if(res.length>0){
-            res.send({registration: false});
+            res1.send({registration: false});
         }
     })
     const user=new Usermodel({
@@ -51,7 +51,7 @@ app.post('/register', (req, res)=>{
         password:password
     })
     user.save().then(()=>{
-        res.send({registration: true})
+        res1.send({registration: true})
     })
     .catch((err)=>{
         console.log(err);

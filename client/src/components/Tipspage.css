@@ -1,27 +1,111 @@
-.tipspage{
-    padding: 7rem 5rem 5rem 5rem;
-    padding-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; */
-}
-
-.tipspage .heading{
-    text-align: center;
-}
-
-.sub-heading{
-    margin-top: 2rem;
-    text-decoration: underline rgb(10, 180, 250);
-    font-family: 'Bebas Neue', sans-serif;
-    color: black;
-    font-weight: 600;
-    font-size: 3rem;
-}
-
-ol li{
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 1.25rem;
-    padding: 0.5rem;
-}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .generate-quiz {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+  }
+  
+  h1 {
+    color: #333;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+  }
+  
+  input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .user-fields-list, .questions-list {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 4px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  .quizes {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    max-width: 80%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .quiz-preview {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 15px;
+  }
+  
+  .quiz-user-field {
+    margin-bottom: 10px;
+  }
+  
+  .quiz-user-field label {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+  }
+  
+  .quiz-question {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .quiz-question p {
+    margin-top: 0;
+  }
+  
+  .quiz-question ul {
+    margin-left: 20px;
+  }
+  
+  .quiz-question li {
+    margin-bottom: 5px;
+  }

@@ -1,20 +1,146 @@
-import React from 'react'
-import "./Testpage.css"
-import tests from "./assets/tests.jpg"
+import React, { useState } from 'react';
+import "./Testpage.css";
 
 const Testpage = () => {
-  return (
-    <div>
-        <div className="testpage">
-            <div className="heading">The Liebowitz Social Anxiety Scale</div>
-            <div className="para">There are several social anxiety questionnaires that help determine whether or not an individual should be diagnosed with SAD. The Liebowitz Social Anxiety Scale is one of the most efficient and valid questionnaires that can help you get an idea of the severity of your social phobia. It is a request that you remain honest while selecting the answers as that wil increase the accuracy of the result. Based on the results you will be given recommendations and we hope that you follow them.</div>
-            <div className='img-container'>
-                <img src={tests} alt="tests" />
-            </div>
-            <div className="para">The following test will ask you questions based on different kinds of social situations. Read each situation carefully and rate how anxious or fearful you feel in the situation. Next, you will be asked to rate how often you avoid the scenario. If you have never faced a certain scenario imagine what would you do in it.</div>
-        </div>
-    </div>
-  )
-}
+  const [userFields, setUserFields] = useState([]);    // Store additional user info fields
+  const [questions, setQuestions] = useState([]);      // Store all quiz questions
+  const [currentField, setCurrentField] = useState(""); // Track the current user field being added
+  const [currentQuestion, setCurrentQuestion] = useState(""); // Track the current question
+  const [currentOptions, setCurrentOptions] = useState("");   // Track the current options for a question
+  const [visible, setVisible] = useState(false); 
+  // Handler to add user fields (e.g., name, email)
+  const addUserField = () => {
+    if (currentField.trim() !== "") {
+      setUserFields([...userFields, { name: currentField, type: "text" }]);
+      setCurrentField("");
+    }
+  };
 
-export default Testpage
+  // Handler to add quiz questions
+  const addQuestion = () => {
+    if (currentQuestion.trim() !== "" && currentOptions.trim() !== "") {
+      const optionsArray = currentOptions.split("\n"); // Split the options based on newline
+      const newQuestion = {
+        question: currentQuestion,
+        options: optionsArray,
+      };
+      setQuestions([...questions, newQuestion]);
+      setCurrentQuestion("");
+      setCurrentOptions("");
+    }
+  };
+  function handleVisible(){
+      setVisible(!visible);
+  }
+  return (
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <div className="generate-quiz" style={{ marginTop: "100px" }}>
+        <h1>Design Quiz</h1>
+        <button onClick={() =>{
+            handleVisible();
+           console.log(questions)}} >View Quiz</button>
+
+        <div>
+          <h1>User's Information</h1>
+          <input
+            type="text"
+            placeholder="Add field"
+            value={currentField}
+            onChange={(e) => setCurrentField(e.target.value)}
+          />
+          <button onClick={addUserField}>ADD</button>
+
+          {/* Display added user fields with inputs */}
+          {userFields.length > 0 && (
+            <div className="user-fields-list">
+              <h2>Added Fields:</h2>
+              <ul>
+                {userFields.map((field, index) => (
+                  <li key={index}>
+                    <label>{field.name}: </label>
+                    <input type={field.type} placeholder={field.name} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <h1>Questions</h1>
+          <input
+            type="text"
+            placeholder="Enter your question"
+            value={currentQuestion}
+            onChange={(e) => setCurrentQuestion(e.target.value)}
+          />
+          <br />
+          <textarea
+            value={currentOptions}
+            onChange={(e) => setCurrentOptions(e.target.value)}
+            placeholder="Put answers with numbers, e.g., 1. option one\n2. option two"
+          ></textarea>
+          <button onClick={addQuestion}>ADD</button>
+
+          {/* Display added questions */}
+          {questions.length > 0 && (
+            <div className="questions-list">
+              <h2>Added Questions:</h2>
+              <ul>
+                {questions.map((q, index) => (
+                  <li key={index}>
+                    <b>Q{index + 1}:</b> {q.question}
+                    <ul>
+                      {q.options.map((option, optIndex) => (
+                        <li key={optIndex}>{option}</li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Displaying the designed quiz */}
+      <div className="quizes" style={visible?{visibility:"visible"}:{visibility:"hidden"}}>
+        <h2>Created Quiz</h2>
+        <div className="quiz-preview">
+          <h3>User Fields:</h3>
+          {userFields.length > 0 ? (
+            userFields.map((field, index) => (
+              <div key={index} className="quiz-user-field">
+                <label>{field.name}:</label>
+                <input type={field.type} placeholder={field.name} />
+              </div>
+            ))
+          ) : (
+            <p>No user fields added</p>
+          )}
+
+          <h3>Questions:</h3>
+          {questions.length > 0 ? (
+            questions.map((q, index) => (
+              <div key={index} className="quiz-question">
+                <p>
+                  <b>Q{index + 1}:</b> {q.question}
+                </p>
+                <ul>
+                  {q.options.map((option, optIndex) => (
+                    <li key={optIndex}>{option}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          ) : (
+            <p>No questions added</p>
+          )}
+          <button onClick={handleVisible} style={{cursor:"pointer",padding:"5px"}}>Close</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Testpage;

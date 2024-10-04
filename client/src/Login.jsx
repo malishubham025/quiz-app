@@ -3,7 +3,7 @@ import Axios from 'axios'
 import './Login.css'
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-
+import Cookies from 'js-cookie';
 const Login = () => {
     // States are used to hold some value like variables
     const [name, setName] = useState("");
@@ -24,7 +24,8 @@ const Login = () => {
         })
         console.log(response.data);
         if (response.data.userfound) {
-            navigate('/home', { state: { name: name, auth: true } });
+            Cookies.set("isloggedin",true);
+            navigate('/', { state: { name: name, auth: true } });
         }
         else {
             alert("Invalid username or password!")
