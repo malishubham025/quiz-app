@@ -44,12 +44,17 @@ body {
   }
   
   .user-fields-list, .questions-list {
+    
     margin-top: 20px;
     background-color: #f9f9f9;
     padding: 15px;
     border-radius: 4px;
   }
-  
+  .questions-list ul{
+    display: flex;
+    flex-direction: column !important;
+    /* background-color: aqua; */
+  }
   ul {
     list-style-type: none;
     padding: 0;
