@@ -1,0 +1,42 @@
+.intro{
+    padding: 5rem;
+    height: auto;
+}
+
+.intro-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.intro-left{
+    width: 50%;
+}
+
+.intro-right{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.intro-right img{
+    border-radius: 1rem;
+    box-shadow: 0rem 0rem 2rem rgba(0, 150, 200, 0.5);
+}
+
+.heading{
+    text-decoration: underline rgb(10, 180, 250);
+    font-family: 'Bebas Neue', sans-serif;
+    color: black;
+    font-weight: 600;
+    font-size: 5rem;
+    text-shadow: 0rem 0rem 1rem rgba(0, 150, 200, 0.5);
+}
+
+.para{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    /* text-shadow: 0rem 0rem 0.8rem rgba(0, 150, 200, 0.75); */
+    text-align: justify;
+    padding: 1rem 0rem;
+}

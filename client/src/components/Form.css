@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mr+Dafoe&family=Orbitron:wght@900&display=swap');
+
+.form-container{
+    padding: 0rem 5rem 5rem 5rem;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.question{
+    margin-bottom: 3rem;
+}
+
+.answer{
+    display: flex;
+    column-gap: 5rem;
+}
+
+.question label{
+    /* display: flex; */
+    /* align-items: center; */
+    /* column-gap: 0.5rem; */
+    margin-left: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+h4{
+    text-decoration: underline rgb(0, 170, 255);
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 600;
+    font-size: 4rem;
+    text-shadow: 0rem 0rem 0.8rem rgba(0, 150, 200, 0.75);
+    margin-bottom: 1rem;
+}
+
+h3{
+    color: rgb(0, 170, 255);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.75rem;
+}
+
+.submit{
+    height: 3rem;
+    width: 10rem;
+    background-color: rgb(10, 180, 250);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.2rem;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0rem 0rem 0.8rem rgba(0, 150, 200, 0.75);
+    cursor: pointer;
+    align-self: center;
+}
+
+.submit:hover {
+    background-color: rgb(10, 170, 250);
+    box-shadow: 0rem 0rem 1rem rgba(0, 150, 220, 0.95);
+}

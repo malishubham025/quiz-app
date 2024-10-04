@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mr+Dafoe&family=Orbitron:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+.login-container{
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    background-color: black;
+  }
+  
+  .Login {
+    height: 300px;
+    border: 2px solid rgba(0, 150, 220, 0.1);
+    padding: 4rem;
+    border-radius: 5px;
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 400px;
+    margin-top: 15vh;
+    background-color: rgba(255, 255, 255, 0.075); 
+    /* box-shadow: 0rem 0rem 25px rgba(0, 150, 220, 0.5); */
+  }
+
+  .Login label{
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  input{
+    font-family: 'Poppins', sans-serif;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    outline: none;
+    border: none;
+    color: rgba(20, 150, 200);
+  }
+
+  input:focus{
+    outline: 1px solid rgba(20, 150, 200);
+  }
+  
+  button{
+    font-family: 'Poppins', sans-serif;
+    padding: 0.25rem;
+    margin-top: 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: rgb(10, 180, 250);
+    color: white;
+    border: none;
+    outline: none;
+  }
+
+  button:hover{
+    box-shadow: 0rem 0rem 0.8rem rgba(0, 150, 220, 0.75);
+  }

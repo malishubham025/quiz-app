@@ -1,0 +1,36 @@
+.bookspage{
+    padding: 7rem 5rem 5rem 5rem;
+}
+
+.bookspage .heading{
+    text-align: center;
+}
+
+.books{
+    width: 50%;
+}
+
+.books .sub-heading{
+    text-decoration: underline rgb(10, 180, 250);
+    font-family: 'Bebas Neue', sans-serif;
+    color: black;
+    font-weight: 600;
+    font-size: 2.5rem;
+}
+
+.books-container{
+    display: flex;
+    column-gap: 5rem;
+}
+
+.books{
+    padding: 0rem 1rem;
+    text-align: center;
+}
+
+.book-img{
+    height: 15rem;
+    margin: 2rem 0rem;
+    border-radius: 1rem;
+    box-shadow: 0rem 0rem 2rem rgba(0, 150, 200, 0.5);
+}

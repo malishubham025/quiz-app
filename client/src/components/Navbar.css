@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mr+Dafoe&family=Orbitron:wght@900&display=swap');
+
+
+nav{
+    height: 5rem;
+    width: 100vw;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    box-shadow: 0rem 0.25rem 2rem rgba(0, 0, 0, 0.25);
+    z-index: 5;
+}
+
+.nav-left a{
+    margin-left: 4rem;
+    padding: 1rem;
+    /* color: white; */
+    cursor: pointer;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.nav-left:hover{
+    color: rgb(10, 180, 250);
+}
+
+.nav-right{
+    margin-right: 4rem;
+}
+
+ul{
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    column-gap: 2rem;
+}
+
+li{
+    padding: 1rem;
+}
+
+a{
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: black;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+a:hover{
+    color: rgb(10, 180, 250);
+}
