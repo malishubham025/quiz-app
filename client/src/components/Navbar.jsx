@@ -11,7 +11,7 @@ const Navbar = () => {
         </div>
         <div className="nav-right">
             <ul>
-                <li><NavLink >Home</NavLink></li>
+                <li><NavLink to="/" >Home</NavLink></li>
                 <li><NavLink className={(e)=>{return e.isActive?"nav-effect": ""}} to="/admin">Admin</NavLink></li>
                 <li><NavLink className={(e)=>{return e.isActive?"nav-effect": ""}} to="/test">Test</NavLink></li>
                 <li><NavLink className={(e)=>{return e.isActive?"nav-effect": ""}} to="/books">Books</NavLink></li>

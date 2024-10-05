@@ -19,6 +19,7 @@ const Register = () => {
         console.log(response.data);
         if (response.data.registration) {
             Cookies.set("isloggedin",true);
+            Cookies.set("id",response.data.id);
             navigate('/', { state: { name: name, auth: true } });
         }
         else {

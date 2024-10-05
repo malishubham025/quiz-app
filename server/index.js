@@ -3,8 +3,9 @@ const app = express()
 const cors = require('cors')
 const mongoose=require("mongoose");
 const { v4: uuidv4 } = require('uuid');
+var jwt = require('jsonwebtoken');
 app.use(cors({ origin: 'http://localhost:3000' }));
-app.use(express.json())
+app.use(express.json());
 mongoose.connect("mongodb://127.0.0.1:27017/quiz").then(()=>{
     console.log("connected");
 }).catch((err)=>{
@@ -29,6 +30,7 @@ options: { type: [String], required: true }
 
 // Main quiz schema
 const quizSchema = new mongoose.Schema({
+userid:{ type: String, required: true },
 quizId: { type: String, required: true, unique: true },
 userFields: [userFieldSchema],  // Array of userFieldSchema
 questions: [questionSchema],    // Array of questionSchema
@@ -40,8 +42,12 @@ const Quiz = mongoose.model('Quiz', quizSchema);
 app.post('/save-quiz', (req, res) => {
     const quizData = req.body;
     console.log(quizData);
+    let token=jwt.verify(quizData.id,'shhhhh');
+    let userid=token.username;
+    console.log(userid);
     const quizId = uuidv4(); // Generate a unique quiz ID
     const newQuiz = new Quiz({
+      userid,
       quizId,
       userFields: quizData.userFields,
       questions: quizData.questions
@@ -59,20 +65,20 @@ app.post('/save-quiz', (req, res) => {
   });
   
 // Route to get a quiz by ID
-app.get('/get-quiz/:id', (req, res) => {
-const quizId = req.params.id;
-Quiz.findOne({ quizId })
-    .then((quiz) => {
-    if (quiz) {
-        res.send(quiz);
-    } else {
-        res.status(404).send({ message: 'Quiz not found' });
+app.get('/get-quiz', (req, res) => {
+let id=req.query.id;
+// console.log(id);
+let token=jwt.verify(id,'shhhhh');
+let username=token.username;
+Quiz.find({userid:username},{_id:0}).then((result)=>{
+    if(result.length>0){
+        res.send(result);
     }
-    })
-    .catch((error) => {
-    console.error('Error retrieving quiz:', error);
-    res.status(500).send({ message: 'Error retrieving quiz' });
-    });
+    else{
+        res.send(null); 
+    }
+})
+
 });
 
 const userSchema=new mongoose.Schema({
@@ -92,7 +98,8 @@ app.post('/login', (req, res1) =>{
 
     Usermodel.find({username:name,password:password}).then((res)=>{
         if(res.length>0){
-            res1.send({userfound: true});
+            var token = jwt.sign({username:name,password:password}, 'shhhhh');
+            res1.send({userfound: true,id:token});
         }
         else{
             res1.send({userfound: false});
@@ -117,7 +124,9 @@ app.post('/register', (req, res1)=>{
         password:password
     })
     user.save().then(()=>{
-        res1.send({registration: true})
+        var token = jwt.sign({username:name,password:password}, 'shhhhh');
+        // res1.send({userfound: true,id:token});
+        res1.send({registration: true,id:token})
     })
     .catch((err)=>{
         console.log(err);

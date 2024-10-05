@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import "./Testpage.css";
 import Axios from 'axios';
+import Cookies from 'js-cookie';
+
 const Testpage = () => {
   const [userFields, setUserFields] = useState([]);       // Store additional user info fields
   const [questions, setQuestions] = useState([]);         // Store all quiz questions
@@ -43,7 +45,10 @@ const Testpage = () => {
     setVisible(!visible);
   }
   const saveQuiz = () => {
+    let id=Cookies.get('id');
+    // console.log(id);
     const quizData = { userFields, questions };
+    quizData.id=id;
     quizData.quizId = uuidv4();  // Add the unique quizId to the quizData object
     Axios.post('http://localhost:3001/save-quiz', quizData)
       .then(response => {
