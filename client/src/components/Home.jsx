@@ -17,6 +17,7 @@ const Home = () => {
             <div className='home-para'>Hello user, Quizes is a</div> 
             <div className='home-para'>Quiz Taking  Platform</div> 
             <NavLink to="/test"><button className='test'>Design Test <img className='testlogo' src={testlogo} alt="testlink" /></button></NavLink>
+            
         </div>
         <div className="home-right">
             {/* <img className='image' src={peace} alt="" /> */}

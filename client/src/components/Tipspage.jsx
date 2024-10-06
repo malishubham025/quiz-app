@@ -3,17 +3,26 @@ import Axios from 'axios';
 import Cookies from 'js-cookie';
 import "./Tipspage.css";
 
+
 const Tipspage = () => {
   const [quizzes, setQuizzes] = useState([]);  // Store all quizzes
   const [selectedQuiz, setSelectedQuiz] = useState(null);  // Store the selected quiz to display
   const [visible, setVisible] = useState(false);
+  const [uname,setUname]=React.useState("");
+ 
+  
 
-  // Fetch quizzes on component mount
   useEffect(() => {
     let id = Cookies.get("id");
+    // let id = Cookies.get("id");
+    // const { decodedToken, isExpired } = useJwt(id);
+    // console.log(decodedToken);
     Axios.get(`http://localhost:3001/get-quiz`, { params: { id: id } })
       .then((response) => {
-        setQuizzes(response.data); // Save fetched quizzes to state
+        // console.log(response.data.uname);
+        Cookies.set("uname",response.data.uname);
+        setUname(response.data.uname);
+        setQuizzes(response.data.responce); // Save fetched quizzes to state
       })
       .catch((error) => {
         console.error("Error fetching quizzes!", error);
@@ -30,20 +39,27 @@ const Tipspage = () => {
   const closePreview = () => {
     setVisible(false);
   };
-
+  const copyQuiz = (quiz) => {
+    let link = `http://localhost:3000/users-get-quiz/${quiz}`;
+    navigator.clipboard.writeText(link)
+      .then(() => console.log("Copied to clipboard: " + link))
+      .catch((error) => console.error("Failed to copy link: ", error));
+  };
   return (
     <div style={{ marginTop: "100px" }}>
       <h1>Your Quizzes</h1>
       <div className="quiz-list">
-        {quizzes.length > 0 ? (
+        {quizzes && quizzes.length > 0 ? (
           quizzes.map((quiz, index) => (
             <div 
               key={index} 
               className="quiz-id-div" 
-              onClick={() => handleQuizClick(quiz)}
+              
               style={{ cursor: "pointer", border: "1px solid black", marginBottom: "10px", padding: "10px" }}
             >
-              Quiz ID: {quiz.quizId}
+              Quiz ID: {"u"+uname.length+uname+quiz.quizId}
+              <button onClick={() => copyQuiz("u"+uname.length+uname+quiz.quizId)} style={{position:"relative",left:"30px"}}>Copy Link</button>
+              <button onClick={() => handleQuizClick(quiz)} style={{position:"relative",left:"50px"}}>View Quiz</button>
             </div>
           ))
         ) : (

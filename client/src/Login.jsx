@@ -26,7 +26,9 @@ const Login = () => {
         if (response.data.userfound) {
             Cookies.set("isloggedin",true);
             Cookies.set("id",response.data.id);
-            navigate('/', { state: { name: name, auth: true } });
+            const redirectPath = Cookies.get("redirectPath") || '/'; 
+            Cookies.remove("redirectPath");
+            navigate(redirectPath, { state: { name: name, auth: true } });
         }
         else {
             alert("Invalid username or password!")

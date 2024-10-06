@@ -20,7 +20,10 @@ const Register = () => {
         if (response.data.registration) {
             Cookies.set("isloggedin",true);
             Cookies.set("id",response.data.id);
-            navigate('/', { state: { name: name, auth: true } });
+            // navigate('/', { state: { name: name, auth: true } });
+            const redirectPath = Cookies.get("redirectPath") || '/'; 
+            Cookies.remove("redirectPath");
+            navigate(redirectPath, { state: { name: name, auth: true } });
         }
         else {
             Cookies.set("isloggedin",false);

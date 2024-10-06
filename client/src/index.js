@@ -11,12 +11,18 @@ import Books from './Books';
 import About from './About';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import Cookies from 'js-cookie';
-
+import QuizPage from './components/QuizPage';
 // Function to check authentication and render child components accordingly
+import { useLocation } from 'react-router-dom';
 function RenderChild({ children }) {
+  const location = useLocation();
   let isLoggedIn = Cookies.get("isloggedin");
+  if (!isLoggedIn) {
+    Cookies.set("redirectPath", location.pathname);
+  }
   return isLoggedIn ? children : <Navigate to="/login" />;
 }
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -62,6 +68,14 @@ const router = createBrowserRouter([
     path: "/about",
     element: <About />,
   },
+  {
+    path:"/users-get-quiz/:quiz",
+    element:(
+      <RenderChild>
+        <QuizPage />
+      </RenderChild>
+    )
+  }
 ]);
 
 root.render(

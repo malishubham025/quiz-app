@@ -72,7 +72,8 @@ let token=jwt.verify(id,'shhhhh');
 let username=token.username;
 Quiz.find({userid:username},{_id:0}).then((result)=>{
     if(result.length>0){
-        res.send(result);
+        // result.uname=username;
+        res.send({"responce":result,"uname":username});
     }
     else{
         res.send(null); 
@@ -80,6 +81,45 @@ Quiz.find({userid:username},{_id:0}).then((result)=>{
 })
 
 });
+
+app.get('/users-get-quiz/:quiz', (req, res) => {
+    console.log("hi");
+    let quiz = req.params.quiz;  // Correct way to access the 'quiz' parameter
+    console.log(quiz);
+
+    // Extract the length of the username from the initial digits of the string
+    let len = "";
+    let i = 1;
+
+    // Iterate through the quiz string until a non-digit is found (determining the length of the username)
+    while (i < quiz.length && quiz[i] >= '1' && quiz[i] <= '9') {
+        len += quiz[i];
+        i++;
+    }
+
+    console.log(`Length of the username: ${len}`);
+
+    // Parse the length into a number and extract the username
+    let lengthOfUsername = parseInt(len);  // Convert the extracted length to an integer
+    let username = quiz.substring(i, i + lengthOfUsername);  // Extract username based on length
+    let quizId = quiz.substring(i + lengthOfUsername);  // Extract the rest as quiz ID
+
+    // console.log(`Username: ${username}, Quiz ID: ${quizId}`);
+
+    // Query the database with the extracted username
+    Quiz.find({ userid: username,quizId: quizId}, { _id: 0 }).then((result) => {
+        if (result.length > 0) {
+            // console.log(result);
+            res.send(result);
+        } else {
+            res.send(null);
+        }
+    }).catch((error) => {
+        res.status(500).send("Error fetching quiz data: " + error);
+    });
+});
+
+
 
 const userSchema=new mongoose.Schema({
     username:String,
