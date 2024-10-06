@@ -1,25 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Axios from 'axios';
+import Cookies from "js-cookie";
+import { useNavigate } from 'react-router-dom';
 
 const QuizPage = () => {
   const { quiz } = useParams(); // Extract quiz parameter from the URL
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [userAnswers, setUserAnswers] = useState({}); // State to track user answers
+  const [userFieldsValues, setUserFieldsValues] = useState({}); // State to track user field values
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the quiz details from the server using the `quiz` parameter
-    Axios.get(`http://localhost:3001/users-get-quiz/${quiz}`)
-      .then((response) => {
+    const fetchQuizDetails = async () => {
+      try {
+        let username = Cookies.get("id");
+        const response = await Axios.get(`http://localhost:3001/users-get-quiz/${quiz}?username=${username}`);
         setSelectedQuiz({
           userFields: response.data[0].userFields,
           questions: response.data[0].questions,
         });
-      })
-      .catch((error) => {
-        console.error("Error fetching quiz!", error);
-      });
-  }, [quiz]);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          alert("You have already submitted!");
+          navigate("/");
+        } else {
+          console.error('Error fetching quiz!', error);
+        }
+      }
+    };
+
+    fetchQuizDetails();
+  }, [quiz, navigate]);
 
   // Handler to update the selected answer for each question
   const handleAnswerChange = (e, questionIndex) => {
@@ -29,11 +41,37 @@ const QuizPage = () => {
     });
   };
 
+  // Handler to update user fields values
+  const handleUserFieldChange = (e, fieldName) => {
+    setUserFieldsValues({
+      ...userFieldsValues,
+      [fieldName]: e.target.value, // Update the value for the specific user field
+    });
+  };
+
   // Handle form submission
-  const submitForm = (event) => {
+  const submitForm = async (event) => {
     event.preventDefault();
-    console.log("User Answers:", userAnswers); // Log user answers to the console
-    // You can also send the userAnswers object to your backend if needed
+
+    const data = {
+      userid: Cookies.get("id"),
+      quizId: quiz,
+      userFields: userFieldsValues,
+      answers: userAnswers,
+    };
+
+    try {
+      const response = await Axios.post(`http://localhost:3001/user-submit-answer`, data);
+      alert("Your marks are " + response.data.correctAnswers);
+      navigate("/");
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert("You have already submitted!");
+        navigate("/");
+      } else {
+        console.error('Error submitting quiz:', error);
+      }
+    }
   };
 
   // Render loading text while `selectedQuiz` is null
@@ -42,23 +80,29 @@ const QuizPage = () => {
   }
 
   return (
-    <div className="quiz-preview" style={{ marginTop: "20px", border: "1px solid black", padding: "20px" }}>
-      <h2>Test</h2>
+    <div className="quiz-preview" style={{ marginTop: '20px', border: '1px solid black', padding: '20px' }}>
+      <h2>Quiz</h2>
 
       <h3>Fill your Information:</h3>
-      {selectedQuiz.userFields && selectedQuiz.userFields.length > 0 ? (
-        selectedQuiz.userFields.map((field, index) => (
-          <div key={index} className="quiz-user-field">
-            <label>{field.name}:</label>
-            <input type={field.type} placeholder={field.name} />
-          </div>
-        ))
-      ) : (
-        <p>No user fields added</p>
-      )}
-
-      <h3>Questions:</h3>
       <form onSubmit={submitForm}>
+        {selectedQuiz.userFields && selectedQuiz.userFields.length > 0 ? (
+          selectedQuiz.userFields.map((field, index) => (
+            <div key={index} className="quiz-user-field">
+              <label>{field.name}:</label>
+              <input
+                required
+                type={field.type}
+                placeholder={field.name}
+                onChange={(e) => handleUserFieldChange(e, field.name)} // Call handler on input change
+              />
+            </div>
+          ))
+        ) : (
+          <p>No user fields added</p>
+        )}
+
+        <h3>Questions:</h3>
+
         {selectedQuiz.questions && selectedQuiz.questions.length > 0 ? (
           selectedQuiz.questions.map((q, index) => (
             <div key={index} className="quiz-question">
@@ -69,6 +113,7 @@ const QuizPage = () => {
                 {q.options.map((option, optIndex) => (
                   <li key={optIndex}>
                     <input
+                      required
                       type="radio"
                       id={`q${index}-opt${optIndex}`}
                       name={`question${index}`}
@@ -85,7 +130,9 @@ const QuizPage = () => {
           <p>No questions added</p>
         )}
 
-        <button type="submit" style={{ cursor: "pointer", marginTop: "10px" }}>Submit</button>
+        <button type="submit" style={{ cursor: 'pointer', marginTop: '10px' }}>
+          Submit
+        </button>
       </form>
     </div>
   );
