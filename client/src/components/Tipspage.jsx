@@ -14,7 +14,7 @@ const Tipspage = () => {
   
   useEffect(() => {
     let id = Cookies.get("id");
-    Axios.get(`http://localhost:3001/get-quiz`, { params: { id: id } })
+    Axios.get(`https://quiz-app-backend-sepia.vercel.app/get-quiz`, { params: { id: id } })
       .then((response) => {
         Cookies.set("uname", response.data.uname);
         setUname(response.data.uname);
@@ -72,7 +72,7 @@ const Tipspage = () => {
       answers: userAnswers, // Include quiz answers
     };
     console.log(data);
-    Axios.post("http://localhost:3001/submit-quiz", data)  // Update the endpoint URL here
+    Axios.post("https://quiz-app-backend-sepia.vercel.app/submit-quiz", data)  // Update the endpoint URL here
     .then((response) => {
       console.log("Submission successful:", response.data);
       alert("Your answers have been submitted successfully!");

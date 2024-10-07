@@ -12,7 +12,7 @@ const Register = () => {
     const navigate = useNavigate();
 
     const register = async () => {
-        Axios.post('http://localhost:3001/register', {
+        Axios.post('https://quiz-app-backend-sepia.vercel.app/register', {
             name: name,
             password: password
         }).then((response)=>{

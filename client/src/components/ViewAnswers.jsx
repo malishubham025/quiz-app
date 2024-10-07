@@ -9,7 +9,7 @@ function ViewAnswers() {
 
   React.useEffect(() => {
     axios
-      .post("http://localhost:3001/viewall", { quizid })
+      .post("https://quiz-app-backend-sepia.vercel.app/viewall", { quizid })
       .then((response) => {
         const data = response.data;
 

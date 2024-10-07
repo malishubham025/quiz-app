@@ -15,7 +15,7 @@ const QuizPage = () => {
     const fetchQuizDetails = async () => {
       try {
         let username = Cookies.get("id");
-        const response = await Axios.get(`http://localhost:3001/users-get-quiz/${quiz}?username=${username}`);
+        const response = await Axios.get(`https://quiz-app-backend-sepia.vercel.app/${quiz}?username=${username}`);
         setSelectedQuiz({
           userFields: response.data[0].userFields,
           questions: response.data[0].questions,

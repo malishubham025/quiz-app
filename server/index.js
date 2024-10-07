@@ -334,6 +334,9 @@ app.post("/submit-quiz",(req,res)=>{
     
     
 })
+app.get("/",(req,res)=>{
+    res.send("hi");
+})
 app.listen(3001, ()=>{
     console.log("Listening at port 3001...")
 })
