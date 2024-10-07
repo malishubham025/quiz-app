@@ -4,7 +4,10 @@ const cors = require('cors')
 const mongoose=require("mongoose");
 const { v4: uuidv4 } = require('uuid');
 var jwt = require('jsonwebtoken');
-app.use(cors({ origin:[ 'http://localhost:3000','https://stalwart-vacherin-9cef56.netlify.app'] }));
+app.use(cors({ 
+    origin:[ 'http://localhost:3000','https://stalwart-vacherin-9cef56.netlify.app'] ,
+    methods: ['GET', 'POST'],
+}));
 app.use(express.json());
 require('dotenv').config();
 console.log(process.env.user);
