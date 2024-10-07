@@ -18,7 +18,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     const login = async () => {
-        const response = await Axios.post('https://quiz-app-backend-sepia.vercel.app/login', {
+        const response = await Axios.post('https://quiz-app-backend-bro5eb6cc-malishubham025s-projects.vercel.app/login', {
             name: name,
             password: password
         })
