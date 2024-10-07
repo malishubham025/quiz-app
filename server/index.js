@@ -13,7 +13,8 @@ const corsOptions = {
   
   app.use(cors(corsOptions));
   app.use(express.json()); // for parsing JSON bodies
-app.use(express.json());
+// app.use(express.json());
+app.options('*', cors(corsOptions)); // Enable pre-flight across-the-board
 require('dotenv').config();
 console.log(process.env.user);
 mongoose.connect(`mongodb+srv://${process.env.user}:${process.env.pass}@cluster0.u02oy.mongodb.net/quiz`).then(()=>{
