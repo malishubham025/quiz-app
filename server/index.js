@@ -5,7 +5,7 @@ const mongoose=require("mongoose");
 const { v4: uuidv4 } = require('uuid');
 var jwt = require('jsonwebtoken');
 app.use(cors({ 
-    origin:[ 'http://localhost:3000','https://stalwart-vacherin-9cef56.netlify.app'] ,
+    origin:[ 'https://stalwart-vacherin-9cef56.netlify.app'] ,
     methods: ['GET', 'POST'],
 }));
 app.use((req, res, next) => {
