@@ -4,16 +4,15 @@ const cors = require('cors')
 const mongoose=require("mongoose");
 const { v4: uuidv4 } = require('uuid');
 var jwt = require('jsonwebtoken');
-app.use(cors({ 
-    origin:[ 'https://stalwart-vacherin-9cef56.netlify.app'] ,
+const corsOptions = {
+    origin: 'https://stalwart-vacherin-9cef56.netlify.app', // Your frontend URL
     methods: ['GET', 'POST'],
-}));
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all domains
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
+    allowedHeaders: ['Content-Type'],
+    credentials: true,
+  };
+  
+  app.use(cors(corsOptions));
+  app.use(express.json()); // for parsing JSON bodies
 app.use(express.json());
 require('dotenv').config();
 console.log(process.env.user);
