@@ -5,7 +5,7 @@ const mongoose=require("mongoose");
 const { v4: uuidv4 } = require('uuid');
 var jwt = require('jsonwebtoken');
 const corsOptions = {
-    origin: 'https://stalwart-vacherin-9cef56.netlify.app', // Your frontend URL
+    origin: 'https://quiz-frontend-a4quw80y5-malishubham025s-projects.vercel.app/', // Your frontend URL
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true,
