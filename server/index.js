@@ -4,17 +4,23 @@ const cors = require('cors')
 const mongoose=require("mongoose");
 const { v4: uuidv4 } = require('uuid');
 var jwt = require('jsonwebtoken');
-const corsOptions = {
-    origin: 'https://quiz-frontend-a4quw80y5-malishubham025s-projects.vercel.app/', // Your frontend URL
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true,
-  };
-  
-  app.use(cors(corsOptions));
-  app.use(express.json()); // for parsing JSON bodies
-// app.use(express.json());
-app.options('*', cors(corsOptions)); // Enable pre-flight across-the-board
+const allowedOrigins = ['http://localhost:3000', 'https://stalwart-vacherin-9cef56.netlify.app'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+app.use(express.json());
 require('dotenv').config();
 console.log(process.env.user);
 mongoose.connect(`mongodb+srv://${process.env.user}:${process.env.pass}@cluster0.u02oy.mongodb.net/quiz`).then(()=>{
