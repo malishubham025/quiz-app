@@ -11,6 +11,7 @@ import Books from './Books';
 import About from './About';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import ViewAnswers from './components/ViewAnswers';
 import QuizPage from './components/QuizPage';
 // Function to check authentication and render child components accordingly
 import { useLocation } from 'react-router-dom';
@@ -45,6 +46,14 @@ const router = createBrowserRouter([
     element: (
       <RenderChild>
         <Tips />
+      </RenderChild>
+    ),
+  },
+  {
+    path: "/view-answers/:quizid",
+    element: (
+      <RenderChild>
+        <ViewAnswers />
       </RenderChild>
     ),
   },

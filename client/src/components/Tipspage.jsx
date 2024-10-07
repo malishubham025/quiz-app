@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Cookies from 'js-cookie';
 import "./Tipspage.css";
-
+import { Navigate, useNavigate } from 'react-router-dom';
 const Tipspage = () => {
   const [quizzes, setQuizzes] = useState([]);  // Store all quizzes
   const [selectedQuiz, setSelectedQuiz] = useState(null);  // Store the selected quiz to display
@@ -10,6 +10,7 @@ const Tipspage = () => {
   const [uname, setUname] = useState("");
   const [userFieldsValues, setUserFieldsValues] = useState({}); // Track user field inputs
   const [userAnswers, setUserAnswers] = useState({}); // Track answers to quiz questions
+  const navigate = useNavigate();
   
   useEffect(() => {
     let id = Cookies.get("id");
@@ -41,7 +42,9 @@ const Tipspage = () => {
   const copyQuiz = (quiz) => {
     let link = `http://localhost:3000/users-get-quiz/${quiz}`;
     navigator.clipboard.writeText(link)
-      .then(() => console.log("Copied to clipboard: " + link))
+      .then(() => {
+        alert("Link copied give them to users !");
+        console.log("Copied to clipboard: " + link)})
       .catch((error) => console.error("Failed to copy link: ", error));
   };
 
@@ -80,7 +83,11 @@ const Tipspage = () => {
     });
   
   };
-
+  function ViewQuiz(quiz){
+    let id=quiz.quizId;
+    navigate(`/view-answers/${id}`);
+    // console.log(quiz);
+  }
   return (
     <div style={{ marginTop: "100px" }}>
       <h1>Your Quizzes</h1>
@@ -95,6 +102,7 @@ const Tipspage = () => {
               Quiz ID: {"u" + uname.length + uname + quiz.quizId}
               <button onClick={() => copyQuiz("u" + uname.length + uname + quiz.quizId)} style={{position: "relative", left: "30px"}}>Copy Link</button>
               <button onClick={() => handleQuizClick(quiz)} style={{position: "relative", left: "50px"}}>View Quiz</button>
+              <button onClick={() => ViewQuiz(quiz)} style={{position: "relative", left: "50px"}}>View Result</button>
             </div>
           ))
         ) : (

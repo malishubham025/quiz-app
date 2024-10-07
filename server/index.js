@@ -70,12 +70,25 @@ app.post('/save-quiz', (req, res) => {
   });
   let submitedUsers = new mongoose.Schema({
     userid: String,
-    quizid: String
+    quizid: String,
+    data:mongoose.Schema.Types.Mixed
 });
 let submitedUsersmodel = mongoose.model("submitanswers", submitedUsers);
+app.post("/viewall",(req,res)=>{
+    let quizid=req.body.quizid;
+    submitedUsersmodel.find({quizid:quizid},{_id:0,data:1}).then((data)=>{
+        res.send(data);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send();
+    })
 
+
+})
 app.post("/user-submit-answer", (req, res) => {
     let quiz = req.body.quizId;
+    // console.log(req.body);
+
     let x = jwt.verify(req.body.userid, 'shhhhh');
     let userid=x.username;
 
@@ -121,13 +134,17 @@ app.post("/user-submit-answer", (req, res) => {
                             count++;
                         }
                     }
-
+                    let data={
+                        userFields:req.body.userFields,
+                        marks:count
+                    }
                     // Store this submission in the submitted users model
                     let newSubmission = new submitedUsersmodel({
                         userid: userid,
-                        quizid: quizId
+                        quizid: quizId,
+                        data:data
                     });
-
+                    
                     newSubmission.save().then(() => {
                         // Send response with the correct answers count
                         res.send({ correctAnswers: count, message: "Quiz successfully submitted!" });
