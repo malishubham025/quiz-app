@@ -12,23 +12,33 @@ const Register = () => {
     const navigate = useNavigate();
 
     const register = async () => {
-        const response = await Axios.post('http://localhost:3001/register', {
+        Axios.post('http://localhost:3001/register', {
             name: name,
             password: password
-        })
-        console.log(response.data);
-        if (response.data.registration) {
-            Cookies.set("isloggedin",true);
-            Cookies.set("id",response.data.id);
-            // navigate('/', { state: { name: name, auth: true } });
-            const redirectPath = Cookies.get("redirectPath") || '/'; 
-            Cookies.remove("redirectPath");
-            navigate(redirectPath, { state: { name: name, auth: true } });
-        }
-        else {
+        }).then((response)=>{
+            if (response.data.registration) {
+                Cookies.set("isloggedin",true);
+                Cookies.set("id",response.data.id);
+                // navigate('/', { state: { name: name, auth: true } });
+                const redirectPath = Cookies.get("redirectPath") || '/'; 
+                Cookies.remove("redirectPath");
+                navigate(redirectPath, { state: { name: name, auth: true } });
+            }
+        }).catch((err)=>{
             Cookies.set("isloggedin",false);
-            alert("An error occured while registration!")
-        }
+            if(err.response.status==500){
+                alert("already registered !");
+            }
+            else{
+                alert("something went wrong !");
+            }
+        })
+        
+
+        // else {
+        //     Cookies.set("isloggedin",false);
+        //     alert("An error occured while registration!")
+        // }
     }
     return (
         <div className='login-container'>

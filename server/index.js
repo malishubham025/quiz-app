@@ -6,7 +6,9 @@ const { v4: uuidv4 } = require('uuid');
 var jwt = require('jsonwebtoken');
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
-mongoose.connect("mongodb://127.0.0.1:27017/quiz").then(()=>{
+require('dotenv').config();
+console.log(process.env.user);
+mongoose.connect(`mongodb+srv://${process.env.user}:${process.env.pass}@cluster0.u02oy.mongodb.net/quiz`).then(()=>{
     console.log("connected");
 }).catch((err)=>{
     console.log(err);
@@ -76,6 +78,7 @@ app.post('/save-quiz', (req, res) => {
 let submitedUsersmodel = mongoose.model("submitanswers", submitedUsers);
 app.post("/viewall",(req,res)=>{
     let quizid=req.body.quizid;
+    console.log(req.body);
     submitedUsersmodel.find({quizid:quizid},{_id:0,data:1}).then((data)=>{
         res.send(data);
     }).catch((err)=>{
@@ -270,22 +273,25 @@ app.post('/register', (req, res1)=>{
     const password = req.body.password;
     Usermodel.find({username:name,password:password}).then((res)=>{
         if(res.length>0){
-            res1.send({registration: false});
+            res1.status(500).send("userid found !");
+        }
+        else{
+            const user=new Usermodel({
+                username:name,
+                password:password
+            })
+            user.save().then(()=>{
+                var token = jwt.sign({username:name,password:password}, 'shhhhh');
+                // res1.send({userfound: true,id:token});
+                res1.send({registration: true,id:token})
+            })
+            .catch((err)=>{
+                console.log(err);
+                res1.send({registration: false})
+            })
         }
     })
-    const user=new Usermodel({
-        username:name,
-        password:password
-    })
-    user.save().then(()=>{
-        var token = jwt.sign({username:name,password:password}, 'shhhhh');
-        // res1.send({userfound: true,id:token});
-        res1.send({registration: true,id:token})
-    })
-    .catch((err)=>{
-        console.log(err);
-        res.send({registration: false})
-    })
+    
 })
 
 
@@ -299,17 +305,33 @@ app.post("/submit-quiz",(req,res)=>{
             arr.push(value);
         
     }
-    let x=new answermodel({
-        id:req.body.quizId,
-        answers:arr
+    // let quizid=req.body.quizId;
+    answermodel.find({id:req.body.quizId}).then((response)=>{
+        if(response.length>0){
+            
+            answermodel.updateOne({id:req.body.quizId},{$set:{answers:arr}}).then(()=>{
+                console.log("hwif");
+                res.send("saved");
+            }).catch((err)=>{
+                console.log(err);
+            });
+            
+        }
+        else{
+            let x=new answermodel({
+                id:req.body.quizId,
+                answers:arr
+            })
+            x.save().then(()=>{
+                console.log("saved");
+                res.send("saved");
+            })
+            .catch((error) => {
+                res.status(500).send("Error fetching quiz data: " + error);
+            });
+        }
     })
-    x.save().then(()=>{
-        console.log("saved");
-        res.send("saved");
-    })
-    .catch((error) => {
-        res.status(500).send("Error fetching quiz data: " + error);
-    });
+    
     
 })
 app.listen(3001, ()=>{
